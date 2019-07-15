@@ -111,6 +111,7 @@
       let config = getAirlinesChartConfig();
       let scales = getAirlinesChartScales(airlines, config);
       drawBarsAirlinesChart(airlines, scales, config);
+      drawAxesAirlinesChart(airlines, scales, config);
     }
     function getAirlinesChartScales(airlines, config) {
       let { bodyWidth, bodyHeight } = config;
@@ -152,6 +153,27 @@
         .attr("y", d => yScale(d.AirlineName))
         .attr("width", d => xScale(d.Count))
         .attr("fill", "#2a5599");
+    }
+    function drawAxesAirlinesChart(airlines, scales, config) {
+      let { xScale, yScale } = scales;
+      let { container, margin, height } = config;
+      let axisX = d3.axisBottom(xScale).ticks(5);
+
+      container
+        .append("g")
+        .style(
+          "transform",
+          `translate(${margin.left}px,${height - margin.bottom}px)`
+        )
+        .call(axisX);
+
+      //TODO: Create an axis on the left for the Y scale
+      let axisY = d3.axisLeft(yScale);
+      //TODO: Append a g tag to the container, translate it based on the margins and call the axisY axis to draw the left axis.
+      container
+        .append("g")
+        .style("transform", `translate(${margin.left}px,${margin.top}px)`)
+        .call(axisY);
     }
 
     function showData() {

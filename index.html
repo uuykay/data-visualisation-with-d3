@@ -221,6 +221,12 @@
         .attr("fill", "#eee");
     }
 
+    function drawMap(geoJeon) {
+      let config = getMapConfig();
+      let projection = getMapProjection(config);
+      drawBaseMap(config.container, geoJeon.features, projection);
+    }
+
     loadData().then(showData);
   </script>
 </html>

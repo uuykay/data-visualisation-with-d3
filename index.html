@@ -207,6 +207,20 @@
       return projection;
     }
 
+    function drawBaseMap(container, countries, projection) {
+      //TODO: create a geoPath generator and set its projection to be the projection passed as parameter.
+      let path = d3.geoPath().projection(projection);
+      //TODO: use the path generator to draw each country
+      container
+        .selectAll("path")
+        .data(countries)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("stroke", "#ccc")
+        .attr("fill", "#eee");
+    }
+
     loadData().then(showData);
   </script>
 </html>

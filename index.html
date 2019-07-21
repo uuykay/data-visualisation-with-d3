@@ -187,6 +187,8 @@
       drawAirlinesChart(airlines);
       //Using the data saved on loadData
       drawMap(store.geoJSON);
+      let airports = groupByAirport(store.routes);
+      drawAirports(airports);
     }
 
     function getMapConfig() {
@@ -265,6 +267,28 @@
       //We map the keys to the actual ariorts, this is an way to transform the object we got in the previous step into a list.
       result = Object.keys(result).map(key => result[key]);
       return result;
+    }
+
+    function drawAirports(airports) {
+      let config = getMapConfig(); //get the config
+      let projection = getMapProjection(config); //get the projection
+      let container = config.container; //get the container
+
+      let circles = container.selectAll("circle");
+      circles
+        .data(airports)
+        .enter()
+        .append("circle")
+        .attr("r", 1)
+        .attr("cx", d => projection([+d.Longitude, +d.Latitude])[0])
+        .attr("cy", d => projection([+d.Longitude, +d.Latitude])[1])
+        .attr("fill", "#2a5599");
+
+      //TODO: bind the airports to the circles using the .data method.
+      //TODO: for each new airport (hint: .enter)
+      //      - Set the radius to 1
+      //      - set the x and y position of the circle using the projection to convert longitude and latitude to x and y porision.
+      //      - Set the fill color of the circle to  "#2a5599"
     }
 
     loadData().then(showData);

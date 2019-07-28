@@ -153,7 +153,14 @@
         .attr("height", yScale.bandwidth())
         .attr("y", d => yScale(d.AirlineName))
         .attr("width", d => xScale(d.Count))
-        .attr("fill", "#2a5599");
+        .attr("fill", "#2a5599")
+        .on("mouseenter", function(d) {
+          drawRoutes(d.AirlineID);
+          d3.select(this).attr("fill", "#992a5b");
+          // <- this is the new code
+          //TODO: call the drawRoutes function passing the AirlineID id 'd'
+          //TODO: change the fill color of the bar to "#992a5b" as a way to highlight the bar. Hint: use d3.select(this)
+        });
     }
     function drawAxesAirlinesChart(airlines, scales, config) {
       let { xScale, yScale } = scales;
@@ -189,7 +196,6 @@
       drawMap(store.geoJSON);
       let airports = groupByAirport(store.routes);
       drawAirports(airports);
-      drawRoutes("24");
     }
 
     function getMapConfig() {

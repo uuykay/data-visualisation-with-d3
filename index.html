@@ -160,6 +160,13 @@
           // <- this is the new code
           //TODO: call the drawRoutes function passing the AirlineID id 'd'
           //TODO: change the fill color of the bar to "#992a5b" as a way to highlight the bar. Hint: use d3.select(this)
+        })
+        .on("mouseleave", function(d) {
+          drawRoutes(null);
+          d3.select(this).attr("fill", "#2a5599");
+          //TODO: Add another listener, this time for mouseleave
+          //TODO: In this listener, call drawRoutes(null), this will cause the function to remove all lines in the chart since there is no airline withe AirlineID == null.
+          //TODO: change the fill color of the bar back to "#2a5599"
         });
     }
     function drawAxesAirlinesChart(airlines, scales, config) {
@@ -319,9 +326,9 @@
         .attr("x2", d => projection([d.DestLongitude, d.DestLatitude])[0])
         .attr("y2", d => projection([d.DestLongitude, d.DestLatitude])[1])
         .attr("stroke", "#992a2a")
-        .attr("opacity", "0.1")
-        .exit()
-        .remove();
+        .attr("opacity", "0.1");
+
+      bindedData.exit().remove();
 
       //TODO: Use the .enter selector to append a line for each new route.
       //TODO: for each line set the start of the line (x1 and y1) to be the position of the source airport (SourceLongitude and SourceLatitude) Hint: you can use projection to convert longitude and latitude to x and y.

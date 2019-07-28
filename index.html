@@ -189,6 +189,7 @@
       drawMap(store.geoJSON);
       let airports = groupByAirport(store.routes);
       drawAirports(airports);
+      drawRoutes("24");
     }
 
     function getMapConfig() {
@@ -289,6 +290,41 @@
       //      - Set the radius to 1
       //      - set the x and y position of the circle using the projection to convert longitude and latitude to x and y porision.
       //      - Set the fill color of the circle to  "#2a5599"
+    }
+
+    function drawRoutes(airlineID) {
+      let routes = store.routes; //TODO: get the routes from store
+      let projection = store.mapProjection; //TODO: get the projection from the store
+      let container = d3.select("svg#Map"); //TODO: select the svg with id "Map" (our map container)
+      //TODO: filter the routes to keep only the routes which AirlineID is equal to the parameter airlineID received by the function
+      let selectedRoutes = routes.filter(
+        route => route.AirlineID === airlineID
+      );
+
+      let bindedData = container
+        .selectAll("line")
+        .data(selectedRoutes, d => d.ID); //This second parameter tells D3 what to use to identify the routes, this helps D3 to correctly find which routes have been added or removed.
+
+      bindedData
+        .enter()
+        .append("line")
+        .attr("x1", d => projection([d.SourceLongitude, d.SourceLatitude])[0])
+        .attr("y1", d => projection([d.SourceLongitude, d.SourceLatitude])[1])
+        .attr("x2", d => projection([d.DestLongitude, d.DestLatitude])[0])
+        .attr("y2", d => projection([d.DestLongitude, d.DestLatitude])[1])
+        .attr("stroke", "#992a2a")
+        .attr("opacity", "0.1")
+        .exit()
+        .remove();
+
+      //TODO: Use the .enter selector to append a line for each new route.
+      //TODO: for each line set the start of the line (x1 and y1) to be the position of the source airport (SourceLongitude and SourceLatitude) Hint: you can use projection to convert longitude and latitude to x and y.
+      //TODO: for each line set the end of the line (x2 and y2) to be the position of the source airport (DestLongitude and DestLongitude)
+
+      //TODO: set the color of the stroke of the line to "#992a2a"
+      //TODO: set the opacity to 0.1
+
+      //TODO: use exit function over bindedData to remove any routes that does not satisfy the filter.
     }
 
     loadData().then(showData);
